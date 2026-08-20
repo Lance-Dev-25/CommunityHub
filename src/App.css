@@ -73,6 +73,93 @@ nav a:hover {
   margin-top: 0;
 }
 
+.create-post {
+  border: 1px solid #d8e0e5;
+  border-radius: 8px;
+  background: #f8fafb;
+  padding: 20px;
+  margin: 22px 0;
+}
+
+.create-post h2 {
+  font-size: 20px;
+}
+
+.create-post form {
+  display: grid;
+  gap: 8px;
+  text-align: left;
+}
+
+.create-post input,
+.create-post textarea {
+  width: 100%;
+  border: 1px solid #b9c4ca;
+  border-radius: 5px;
+  padding: 10px;
+  font: inherit;
+}
+
+.create-post textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.add-button,
+.like-button,
+.delete-button {
+  border: 0;
+  border-radius: 5px;
+  color: white;
+  font-weight: 700;
+}
+
+.add-button {
+  justify-self: start;
+  background: #17334a;
+}
+
+.like-button {
+  background: #b4364b;
+}
+
+.delete-button {
+  background: #6b2834;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.post-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.form-error {
+  color: #9b1c31;
+  font-weight: 700;
+  margin: 12px 0;
+}
+
+.stats {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+  padding: 12px;
+  border-radius: 6px;
+  background: #e7f0f5;
+}
+
 .post-card a {
   color: #17334a;
   text-decoration: none;

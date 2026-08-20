@@ -4,26 +4,38 @@ function CreatePost({ onAddPost }) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('Lance')
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
 
     if (!title.trim() || !content.trim()) {
+      setError('Please add a title and some content.')
       return
     }
 
-    const newPost = {
-      id: Date.now(),
-      title: title,
-      content: content,
-      author: author,
-      likes: 0,
+    if (!author.trim()) {
+      setError('Please add your name.')
+      return
     }
 
-    onAddPost(newPost)
+    try {
+      setSubmitting(true)
+      setError('')
+      await onAddPost({
+        title: title.trim(),
+        content: content.trim(),
+        author: author.trim(),
+      })
 
-    setTitle('')
-    setContent('')
+      setTitle('')
+      setContent('')
+    } catch (requestError) {
+      setError(requestError.message || 'Your post could not be saved.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -38,6 +50,8 @@ function CreatePost({ onAddPost }) {
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           placeholder="Enter post title"
+          maxLength="100"
+          required
         />
 
         <label>Content</label>
@@ -46,6 +60,8 @@ function CreatePost({ onAddPost }) {
           value={content}
           onChange={(event) => setContent(event.target.value)}
           placeholder="Write your post..."
+          maxLength="2000"
+          required
         />
 
         <label>Author</label>
@@ -54,10 +70,14 @@ function CreatePost({ onAddPost }) {
           type="text"
           value={author}
           onChange={(event) => setAuthor(event.target.value)}
+          maxLength="60"
+          required
         />
 
-        <button type="submit" className="add-button">
-          Add Post
+        {error && <p className="form-error">{error}</p>}
+
+        <button type="submit" className="add-button" disabled={submitting}>
+          {submitting ? 'Publishing…' : 'Publish Post'}
         </button>
       </form>
     </section>

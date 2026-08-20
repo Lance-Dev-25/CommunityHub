@@ -4,6 +4,7 @@ export function useFetch(url) {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [refreshIndex, setRefreshIndex] = useState(0)
 
   useEffect(() => {
     let ignore = false
@@ -40,7 +41,11 @@ export function useFetch(url) {
     return () => {
       ignore = true
     }
-  }, [url])
+  }, [url, refreshIndex])
 
-  return { data, loading, error }
+  function refetch() {
+    setRefreshIndex((currentValue) => currentValue + 1)
+  }
+
+  return { data, setData, loading, error, refetch }
 }

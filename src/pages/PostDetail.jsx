@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 import { useFetch } from '../hooks/useFetch'
+import { API_URL } from '../config'
 
 function PostDetail() {
   const { postId } = useParams()
@@ -9,7 +10,7 @@ function PostDetail() {
     loading,
     error,
   } = useFetch(
-    `http://localhost:3000/community/${postId}`
+    `${API_URL}/posts/${postId}`
   )
 
   if (loading) {
