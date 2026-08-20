@@ -1,3 +1,4 @@
-const configuredUrl = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+export const API_BASE_URL = 'https://communityhub-api-1ke7.onrender.com';
 
-export const API_URL = configuredUrl.replace(/\/$/, "");
+// Strips any trailing slash automatically if present
+export const API_URL = API_BASE_URL.replace(/\/$/, "");
