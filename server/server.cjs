@@ -1,70 +1,34 @@
-// Force Google DNS to bypass local ISP/router DNS resolution blocks
-const dns = require('dns');
-dns.setServers(['8.8.8.8', '8.8.4.4']);
-
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Enable CORS for frontend requests and body parsing
-app.use(cors());
+// 1. Make sure Express handles JSON request bodies (place near the top, above routes)
 app.use(express.json());
 
-// MongoDB Atlas Connection
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.error('MongoDB connection error:', err));
-
-// Post Schema & Model
+// 2. Update your Post Schema to include 'likes'
 const postSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  content: { type: String, required: true },
-  author: { type: String, default: 'Anonymous' },
-  createdAt: { type: Date, default: Date.now },
+  title: String,
+  author: String,
+  content: String,
+  likes: { type: Number, default: 0 }
 });
+const Post = mongoose.model('Post', postSchema);
 
-const Post = mongoose.models.Post || mongoose.model('Post', postSchema);
-
-// API Routes
-
-// Root Health Check Route
-app.get('/', (req, res) => {
-  res.send('CommunityHub API is running');
-});
-
-// GET /api/posts - Fetch all posts
-app.get('/api/posts', async (req, res) => {
+// 3. Add the PUT route to handle like/unlike actions
+app.put('/api/posts/:id/like', async (req, res) => {
   try {
-    const posts = await Post.find().sort({ createdAt: -1 });
-    res.json(posts);
+    const { action } = req.body;
+    const change = action === 'unlike' ? -1 : 1;
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { likes: change } },
+      { new: true }
+    );
+
+    if (!updatedPost) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    res.json(updatedPost);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching posts', error: error.message });
+    console.error('Error updating likes:', error);
+    res.status(500).json({ error: 'Failed to update likes' });
   }
-});
-
-// POST /api/posts - Create a new post
-app.post('/api/posts', async (req, res) => {
-  try {
-    const { title, content, author } = req.body;
-    const newPost = new Post({ title, content, author });
-    await newPost.save();
-    res.status(201).json(newPost);
-  } catch (error) {
-    res.status(400).json({ message: 'Error creating post', error: error.message });
-  }
-});
-
-// Catch-all 404 Route
-app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found' });
-});
-
-// Start Express Server
-app.listen(PORT, () => {
-  console.log(`CommunityHub API running on port ${PORT}`);
 });
