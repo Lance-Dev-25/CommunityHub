@@ -1,0 +1,10 @@
+[35mREADME.md[m[36m:[m[32m3[m[36m:[mCommunityHub is a small full-stack community posting app. [1;31mUser[ms can create posts, view a single post, like posts, and delete posts. The React frontend communicates with an Express API, and posts are stored in MongoDB Atlas.
+[35mlesson-22-exercise.js[m[36m:[m[32m5[m[36m:[mconst raw[1;31mUser[ms = {
+[35mlesson-22-exercise.js[m[36m:[m[32m27[m[36m:[m  const { insertedId } = raw[1;31mUser[ms.insertOne({
+[35mlesson-22-exercise.js[m[36m:[m[32m43[m[36m:[m  raw[1;31mUser[ms.insertOne({
+[35mlesson-22-exercise.js[m[36m:[m[32m52[m[36m:[m  const user = raw[1;31mUser[ms.findOne({ email });
+[35mlesson-22-exercise.js[m[36m:[m[32m91[m[36m:[m  JSON.stringify(raw[1;31mUser[ms.docs)
+[35mlesson-22-exercise.js[m[36m:[m[32m113[m[36m:[m  const { insertedId } = raw[1;31mUser[ms.insertOne({
+[35mlesson-22-exercise.js[m[36m:[m[32m128[m[36m:[m    const user = raw[1;31mUser[ms.findOne({ email: login });
+[35mlesson-22-exercise.js[m[36m:[m[32m159[m[36m:[m  raw[1;31mUser[ms.insertOne({
+[35mlesson-22-exercise.js[m[36m:[m[32m180[m[36m:[m  console.log("database ->", JSON.stringify(raw[1;31mUser[ms.docs));

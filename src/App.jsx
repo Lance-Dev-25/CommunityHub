@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -9,10 +10,14 @@ import PostDetail from './pages/PostDetail'
 import './App.css'
 
 function App() {
+  // Global user state (defaults to "Lance")
+  const [currentUser, setCurrentUser] = useState("Lance");
+
   return (
     <div className="app">
 
-      <Header />
+      {/* Pass user state to Header so it displays "Logged in as: Lance" */}
+      <Header currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
       <main className="container">
 
@@ -20,17 +25,17 @@ function App() {
 
           <Route
             path="/"
-            element={<Home />}
+            element={<Home currentUser={currentUser} />}
           />
 
           <Route
             path="/posts"
-            element={<Posts />}
+            element={<Posts currentUser={currentUser} />}
           />
 
           <Route
             path="/posts/:postId"
-            element={<PostDetail />}
+            element={<PostDetail currentUser={currentUser} />}
           />
 
           <Route
